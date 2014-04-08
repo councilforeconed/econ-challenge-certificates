@@ -1,3 +1,5 @@
 *.pdf
 *.un~
 .DS_Store
+input.csv
+resources/
