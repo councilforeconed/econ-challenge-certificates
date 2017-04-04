@@ -1,5 +1,6 @@
 *.pdf
 *.un~
 .DS_Store
-input.csv
+*.csv
 resources/
+output/
