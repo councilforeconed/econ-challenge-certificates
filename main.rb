@@ -11,43 +11,57 @@ CSV.foreach('./input.csv', headers: true) do |row|
   teacher = row[0]
   name = "#{row[1]} #{row[2]}"
   division = row[3]
-  filename = name.parameterize
-  Dir.mkdir("./output/#{teacher}") unless File.exists?("./output/#{teacher}")
-  Prawn::Document.generate "output/#{teacher}/#{filename}.pdf", page_layout: :landscape do
+  school = row[4]
+  event = row[5]
+  eventDate = row[6]
+  randomName = row[7]
+  rootfolder = "./output/#{event.parameterize}"
+  Dir.mkdir("#{rootfolder}") unless File.exists?("#{rootfolder}/")
+  if randomName != nil
+    filename = randomName
+    foldername = "All"
+  else
+    filename = name.parameterize
+    foldername = teacher
+  end
+  Dir.mkdir("#{rootfolder}/#{foldername}") unless File.exists?("#{rootfolder}/#{foldername}")
+  Prawn::Document.generate "#{rootfolder}/#{foldername}/#{filename}.pdf", page_layout: :landscape do
     #Uncomment next line to display alignment grid on generated pdf, to aid in element positioning
     #stroke_axis
-    move_down 25
-    image "./resources/cee_logo.jpg", :position => :center
+    move_down 15
+    image "./resources/challenge_logo.jpg", position: :center, fit: [800,85]
     move_down 40
     font "./resources/OpenSans-Italic.ttf"
     text "Certificate of Participation", size: 48, align: :center
     move_down 20
     font "./resources/OpenSans-Regular.ttf"
     text "This certificate is presented to", size: 18, align: :center
-    move_down 10
+    move_down 15
+    font "./resources/OpenSans-Bold.ttf"
     text name, size: 24, align: :center
     move_down 10
+    font "./resources/OpenSans-Regular.ttf"
+    text school, size: 18, align: :center
+    move_down 15
     text "in recognition of your exemplary participation in the #{division} Division of the ", size: 18, align: :center
-    move_down 10
-    image "./resources/challenge_logo.jpg", position: :center, fit: [400,45]
     move_down 15
     font "./resources/OpenSans-BoldItalic.ttf"
-    text "2015 National Semi-Finals", size: 24, align: :center
+    text event, size: 24, align: :center
     move_down 15
-    font "./resources/OpenSans-Italic.ttf"
+    font "./resources/OpenSans-Regular.ttf"
     text "Congratulations on your excellent achievement", size: 18, align: :center
     #image "./resources/cee_logo.jpg", at: [0,545], fit: [400,100]
     #image "./resources/state_farm_logo.jpg", at: [550,545], fit: [400,100]
-    image "./resources/chris_signature.jpg", at: [0,90], fit: [200,50]
+    image "./resources/njmsig.jpg", at: [0,90], fit: [200,50]
     stroke do
       stroke_color '666666'
       line_width 1
       # may need to adjust the value below; move_down does not seem to be working as intended
-      move_down 50
+      move_down 80
       horizontal_line(5, 200)
     end
-    text_box "Chris Caltabiano\nVice President, Programs", at: [5,50]
+    text_box "Nan J. Morrison\nPresident and Chief Executive Officer\nCouncil for Economic Education", at: [5,50]
 #    text_box "Chris Caltabiano\nVice President, Domestic Programs\nCouncil for Economic Education", at: [5,75]
-    text_box "April 14, 2015", at: [600,50]
+    text_box "#{eventDate}\nNew York City, NY", at: [600,50]
   end
 end
